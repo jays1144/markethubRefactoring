@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebSecurity // Spring Security 지원을 가능하게 함
+@EnableWebSecurity
 public class WebSecurityConfig{
 
     private final JwtUtil jwtUtil;
@@ -71,15 +72,15 @@ public class WebSecurityConfig{
 
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/api/user/**","static/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
-                        .requestMatchers("/api/carts/**").permitAll()
-                        .requestMatchers("/api/items/**").permitAll()
-                        .requestMatchers("/api/payment/token").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/api/stores/**").permitAll()
-                        .requestMatchers("/api/event/**").permitAll()
-                        .requestMatchers("/img/**").permitAll()
+//                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+//                        .requestMatchers("/api/user/**","static/**").permitAll()
+//                        .requestMatchers("/api/carts/**").permitAll()
+//                        .requestMatchers("/api/items/**").permitAll()
+//                        .requestMatchers("/api/payment/token").permitAll()
+//                        .requestMatchers("/").permitAll()
+//                        .requestMatchers("/api/stores/**").permitAll()
+//                        .requestMatchers("/api/event/**").permitAll()
+//                        .requestMatchers("/img/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
@@ -104,5 +105,21 @@ public class WebSecurityConfig{
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);
+    }
+
+    // 필터 처리 필요없는 부분
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return (web -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .requestMatchers("/api/user/**","static/**")
+                .requestMatchers("/api/carts/**")
+                .requestMatchers("/api/items/**")
+                .requestMatchers("/api/payment/token")
+                .requestMatchers("/")
+                .requestMatchers("/api/stores/**")
+                .requestMatchers("/api/event/**")
+                .requestMatchers("/img/**")
+        );
     }
 }

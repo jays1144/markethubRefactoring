@@ -88,10 +88,8 @@ public class UserController {
             userService.createUser(userRequestDto);
         } catch (IllegalArgumentException e) {
             // 예외 처리 코드
-            System.out.println("회원가입 실패");
             return "redirect:/api/user/errorPage"; // 예외 발생 시 리다이렉션
         }
-        System.out.println("회원가입 성공");
         return "redirect:/api/user/loginFormPage"; // 정상적인 경우 리다이렉션
     }
 }
