@@ -59,6 +59,7 @@ public class WebSecurityConfig{
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService, securityRedisService);
     }
 
+    // 여기 내일 확인하기
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // CSRF 설정
