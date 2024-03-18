@@ -59,7 +59,6 @@ public class WebSecurityConfig{
         return new JwtAuthorizationFilter(jwtUtil, userDetailsService, securityRedisService);
     }
 
-    // 여기 내일 확인하기
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // CSRF 설정
@@ -82,14 +81,14 @@ public class WebSecurityConfig{
 //                        .requestMatchers("/api/stores/**").permitAll()
 //                        .requestMatchers("/api/event/**").permitAll()
 //                        .requestMatchers("/img/**").permitAll()
-                        .anyRequest().authenticated() // 그 외 모든 요청 인증처리
+                        .anyRequest().authenticated()
         );
 
 
 
         http.addFilterBefore(corsFilter(), ChannelProcessingFilter.class);
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class); // 인가 전 인증
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class); // 인가 전 UserName, Password 확인
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
